@@ -15,7 +15,7 @@ class TextureFactory
 		var bitmap = new Bitmap(bitmapData);
 		var texture = Texture.fromBitmap(bitmap);
 
-		atlasMap[cast spritesheetKey] = new TextureAtlas(texture, xml);
+		atlasMap[cast(spritesheetKey, String)] = new TextureAtlas(texture, xml);
 		bitmapData.dispose();
 	}
 	public function getTextures(packageClass:Class<Dynamic>, spritesheetKey:SpriteSheetKey, key:String):flash.Vector<Texture>
@@ -24,7 +24,7 @@ class TextureFactory
 		packages.shift();
 		packages.pop();
 		var name = SPRITESHEET_FOLDER + spritesheetKey + "/" + packages.join("/") + "/" + key;
-		return cast(atlasMap[cast spritesheetKey], TextureAtlas).getTextures(name);
+		return cast(atlasMap[cast(spritesheetKey, String)], TextureAtlas).getTextures(name);
 	}
 
 	//singleton
