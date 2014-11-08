@@ -1,5 +1,6 @@
 package haxegame;
 
+import haxegame.load.TextureLoaderSet;
 import haxegame.texture.SpriteSheetKey;
 import starling.core.Starling;
 import starling.display.Sprite;
@@ -20,7 +21,7 @@ class Main
 	private var starlingWorld:Starling;
 
 	private var swfLoader:SwfLoader;
-	private var textureLoader:TextureLoader;
+	private var textureLoaderSet:TextureLoaderSet;
 
 	private var starlingRoot:Sprite;
 	private var gameLayer:Sprite;
@@ -59,15 +60,14 @@ class Main
 	}
 	private function initializeToLoadTexture()
 	{
-		textureLoader = new TextureLoader();
-		textureLoader.execute();
+		textureLoaderSet = new TextureLoaderSet();
 		mainFunction = loadTexture;
 	}
 	private function loadTexture()
 	{
-		textureLoader.run();
-		if(!textureLoader.isFinished()) return;
-		textureLoader.destroy();
+		textureLoaderSet.run();
+		if(!textureLoaderSet.isFinished()) return;
+		textureLoaderSet.destroy();
 
 		initializeToLoadStarling();
 	}
@@ -88,11 +88,21 @@ class Main
 	//
 	private function initializeMain()
 	{
-		TextureFactory.getInstance().add(SpriteSheetKey.ONE, textureLoader.getXml(), textureLoader.getBitmapData());
+		initializeTexture();
 		initializeLayer();
 		initializeGame();
 
 		initializeToPlayGame();
+	}
+	private function initializeTexture()
+	{
+		addTexture(SpriteSheetKey.ONE);
+		//addTexture(SpriteSheetKey.TWO);
+	}
+	private function addTexture(spriteSheetKey:SpriteSheetKey)
+	{
+		var textureLoader = textureLoaderSet.getTextureLoader(spriteSheetKey);
+		TextureFactory.getInstance().add(spriteSheetKey, textureLoader.getXml(), textureLoader.getBitmapData());
 	}
 	private function initializeLayer()
 	{

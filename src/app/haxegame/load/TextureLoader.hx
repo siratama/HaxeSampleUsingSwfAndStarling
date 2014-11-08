@@ -11,12 +11,15 @@ class TextureLoader
 	public var pngLoader(default, null):Loader;
 	private var loaded:Bool;
 	private static inline var TEXTURE_DIRECTORY = "texture/";
-	private static inline var XML_FILE = TEXTURE_DIRECTORY + "view.xml";
-	private static inline var PNG_FILE = TEXTURE_DIRECTORY + "view.png";
-
+	private var xmlFile:String;
+	private var pngFile:String;
 	private var mainFunction:Void->Void;
-	public function new()
+
+	public function new(fileName:String)
 	{
+		xmlFile = TEXTURE_DIRECTORY + fileName + ".xml";
+		pngFile = TEXTURE_DIRECTORY + fileName + ".png";
+
 		xmlLoader = new URLLoader();
 		xmlLoader.addEventListener(Event.COMPLETE, onLoadComplete);
 
@@ -34,7 +37,7 @@ class TextureLoader
 	}
 	public function execute()
 	{
-		xmlLoader.load(new URLRequest(XML_FILE));
+		xmlLoader.load(new URLRequest(xmlFile));
 		mainFunction = loadXml;
 	}
 	private function loadXml()
@@ -42,7 +45,7 @@ class TextureLoader
 		if(!loaded) return;
 
 		loaded = false;
-		pngLoader.load(new URLRequest(PNG_FILE));
+		pngLoader.load(new URLRequest(pngFile));
 		mainFunction = loadPng;
 	}
 	private function loadPng()
