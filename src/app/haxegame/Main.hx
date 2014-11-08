@@ -1,5 +1,6 @@
 package haxegame;
 
+import haxegame.texture.SpriteSheetKey;
 import starling.core.Starling;
 import starling.display.Sprite;
 import flash.display.MovieClip;
@@ -87,7 +88,7 @@ class Main
 	//
 	private function initializeMain()
 	{
-		TextureFactory.getInstance().initializeField(textureLoader.getXml(), textureLoader.getBitmapData());
+		TextureFactory.getInstance().add(SpriteSheetKey.ONE, textureLoader.getXml(), textureLoader.getBitmapData());
 		initializeLayer();
 		initializeGame();
 

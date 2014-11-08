@@ -8,14 +8,15 @@ import flash.display.BitmapData;
 class TextureFactory
 {
 	private static inline var SPRITESHEET_FOLDER = "spritesheet";
-	public var atlas(default, null):TextureAtlas;
+	private var atlasMap:Map<String, TextureAtlas>;
 
-	public function initializeField(xml:XML, bitmapData:BitmapData)
+	public function add(spritesheetKey:SpriteSheetKey, xml:XML, bitmapData:BitmapData)
 	{
 		var bitmap = new Bitmap(bitmapData);
 		var texture = Texture.fromBitmap(bitmap);
 
-		atlas = new TextureAtlas(texture, xml);
+		atlasMap[cast spritesheetKey] = new TextureAtlas(texture, xml);
+		bitmapData.dispose();
 	}
 	public function getTextures(packageClass:Class<Dynamic>, spritesheetKey:SpriteSheetKey, key:String):flash.Vector<Texture>
 	{
@@ -23,7 +24,7 @@ class TextureFactory
 		packages.shift();
 		packages.pop();
 		var name = SPRITESHEET_FOLDER + spritesheetKey + "/" + packages.join("/") + "/" + key;
-		return atlas.getTextures(name);
+		return cast(atlasMap[cast spritesheetKey], TextureAtlas).getTextures(name);
 	}
 
 	//singleton
@@ -33,5 +34,8 @@ class TextureFactory
 		if(instance == null) instance = new TextureFactory();
 		return instance;
 	}
-	private function new(){}
+	private function new()
+	{
+		atlasMap = new Map();
+	}
 }
