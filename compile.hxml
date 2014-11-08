@@ -1,0 +1,11 @@
+-swf deploy/main.swf
+-main haxegame.Main
+#-main haxegame.Test
+-swf-version 11
+-swf-header 500:500:24:ffffff
+-swf-lib lib/starling.swc
+--macro patchTypes('lib/starling.patch')
+-cp src/app
+-cp src/flash
+-debug
+-D fdb
