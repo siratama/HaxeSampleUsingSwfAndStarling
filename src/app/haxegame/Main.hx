@@ -88,21 +88,11 @@ class Main
 	//
 	private function initializeMain()
 	{
-		initializeTexture();
+		TextureFactory.getInstance().initialize(textureLoaderSet);
 		initializeLayer();
 		initializeGame();
 
 		initializeToPlayGame();
-	}
-	private function initializeTexture()
-	{
-		addTexture(SpriteSheetKey.ONE);
-		//addTexture(SpriteSheetKey.TWO);
-	}
-	private function addTexture(spriteSheetKey:SpriteSheetKey)
-	{
-		var textureLoader = textureLoaderSet.getTextureLoader(spriteSheetKey);
-		TextureFactory.getInstance().add(spriteSheetKey, textureLoader.getXml(), textureLoader.getBitmapData());
 	}
 	private function initializeLayer()
 	{

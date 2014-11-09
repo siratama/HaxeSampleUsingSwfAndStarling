@@ -1,4 +1,5 @@
 package haxegame.texture;
+import haxegame.load.TextureLoaderSet;
 import flash.Vector;
 import starling.textures.TextureAtlas;
 import starling.textures.Texture;
@@ -9,15 +10,28 @@ class TextureFactory
 {
 	private static inline var SPRITESHEET_FOLDER = "spritesheet";
 	private var atlasMap:Map<String, TextureAtlas>;
+	private var textureLoaderSet:TextureLoaderSet;
 
-	public function add(spritesheetKey:SpriteSheetKey, xml:XML, bitmapData:BitmapData)
+	public function initialize(textureLoaderSet:TextureLoaderSet)
 	{
+		this.textureLoaderSet = textureLoaderSet;
+
+		add(SpriteSheetKey.ONE);
+		//add(SpriteSheetKey.TWO);
+	}
+	private function add(spritesheetKey:SpriteSheetKey)
+	{
+		var textureLoader = textureLoaderSet.getTextureLoader(spritesheetKey);
+
+		var bitmapData = textureLoader.getBitmapData();
 		var bitmap = new Bitmap(bitmapData);
 		var texture = Texture.fromBitmap(bitmap);
 
-		atlasMap[cast(spritesheetKey, String)] = new TextureAtlas(texture, xml);
+		atlasMap[cast(spritesheetKey, String)] = new TextureAtlas(texture, textureLoader.getXml());
 		bitmapData.dispose();
 	}
+
+	//
 	public function getTextures(packageClass:Class<Dynamic>, spritesheetKey:SpriteSheetKey, key:String):flash.Vector<Texture>
 	{
 		var packages = Type.getClassName(packageClass).split(".");
